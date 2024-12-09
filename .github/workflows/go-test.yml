@@ -41,11 +41,11 @@ jobs:
     name: Go test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        name: Checkout Skiff actions
-        with:
-          repository: '${{ env.ACTIONS_REPO }}'
-          path: '${{ env.ACTIONS_PATH }}'
+#      - uses: actions/checkout@v4
+#        name: Checkout Skiff actions
+#        with:
+#          repository: '${{ env.ACTIONS_REPO }}'
+#          path: '${{ env.ACTIONS_PATH }}'
       - uses: ./.github/actions/go
         name: Setup go
       - uses: ./.github/actions/go-test
