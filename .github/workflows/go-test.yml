@@ -31,7 +31,6 @@ on:
         required: false
         default: '70'
         type: string
-    secrets: inherit
 
 env:
   ACTIONS_REPO: skiff-sh/actions
