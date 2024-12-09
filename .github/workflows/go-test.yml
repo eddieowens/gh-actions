@@ -43,7 +43,6 @@ jobs:
       - uses: actions/checkout@v4
         name: Checkout Skiff actions
         with:
-          token: '${{ secrets.BOT_TOKEN }}'
           repository: '${{ env.ACTIONS_REPO }}'
           path: './skiff-actions'
       - uses: ./skiff-actions/.github/actions/go
