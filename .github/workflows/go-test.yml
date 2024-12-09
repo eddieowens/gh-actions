@@ -46,12 +46,12 @@ jobs:
         with:
           repository: '${{ env.ACTIONS_REPO }}'
           path: '${{ env.ACTIONS_PATH }}'
-      - uses: ./${{ env.ACTIONS_PATH }}/actions/go
+      - uses: ${{ env.ACTIONS_PATH }}/.github/actions/go
         name: Setup go
-      - uses: ./${{ env.ACTIONS_PATH }}/actions/go-test
+      - uses: ${{ env.ACTIONS_PATH }}/.github/actions/go-test
         with:
           dirs: ${{ inputs.dirs }}
-      - uses: ./${{ env.ACTIONS_PATH }}/actions/go-coverage
+      - uses: ${{ env.ACTIONS_PATH }}/.github/actions/go-coverage
         with:
           ref-name: ${{ inputs.ref-name }}
           go-cover-path: ${{ inputs.go-cover-path }}
