@@ -34,7 +34,6 @@ on:
 
 env:
   ACTIONS_REPO: skiff-sh/actions
-  ACTIONS_PATH: ./skiff-actions
 
 jobs:
   go-test:
@@ -45,13 +44,13 @@ jobs:
         name: Checkout Skiff actions
         with:
           repository: '${{ env.ACTIONS_REPO }}'
-          path: '${{ env.ACTIONS_PATH }}'
-      - uses: ${{ env.ACTIONS_PATH }}/.github/actions/go
+          path: './skiff-actions'
+      - uses: ./skiff-actions/.github/actions/go
         name: Setup go
-      - uses: ${{ env.ACTIONS_PATH }}/.github/actions/go-test
+      - uses: ./skiff-actions/.github/actions/go-test
         with:
           dirs: ${{ inputs.dirs }}
-      - uses: ${{ env.ACTIONS_PATH }}/.github/actions/go-coverage
+      - uses: ./skiff-actions/.github/actions/go-coverage
         with:
           ref-name: ${{ inputs.ref-name }}
           go-cover-path: ${{ inputs.go-cover-path }}
