@@ -13,6 +13,6 @@ runs:
   using: composite
   steps:
     - name: Go unit test
-      uses: shell
+      shell: bash
       run: |
         go test -v -coverprofile=${{inputs.cover-path}} -covermode=atomic `find ${{inputs.dirs}} -type d -mindepth 1`

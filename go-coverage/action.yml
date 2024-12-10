@@ -38,7 +38,7 @@ runs:
         threshold-package: ${{ inputs.threshold-package }}
         threshold-total: ${{ inputs.threshold-total }}
     - name: Find PR ID
-      uses: shell
+      shell: bash
       id: pr
       run: |
         PR_ID=$(gh pr view --json 'number' -q '.number' ${{ inputs.ref-name }})
