@@ -55,7 +55,7 @@ runs:
       uses: peter-evans/find-comment@v3
       id: fc
       with:
-        issue-number: ${{ env.pull_request_id }}
+        issue-number: ${{ steps.pr.outputs.id }}
         comment-author: 'github-actions[bot]'
         body-includes: 'go-test-coverage report:'
     - name: Post coverage comment
@@ -63,7 +63,7 @@ runs:
       uses: peter-evans/create-or-update-comment@v4
       with:
         token: ${{ inputs.gh_token || github.token }}
-        issue-number: ${{ env.pull_request_id }}
+        issue-number: ${{ steps.pr.outputs.id }}
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: replace
         body: |
