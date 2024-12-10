@@ -33,7 +33,8 @@ runs:
       uses: vladopajic/go-test-coverage@v2
       continue-on-error: ${{ inputs.gh-token != '' }}
       with:
-        config: ${{ inputs.testcoverage-file || null}}
+        local-prefix: github.com/${{ github.repository }}
+        profile: ${{ inputs.go-cover-path }}
         threshold-file: ${{ inputs.threshold-file }}
         threshold-package: ${{ inputs.threshold-package }}
         threshold-total: ${{ inputs.threshold-total }}
