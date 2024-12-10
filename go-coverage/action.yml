@@ -46,9 +46,9 @@ runs:
       run: |
         PR_ID=$(gh pr view --json 'number' -q '.number' ${{ inputs.ref-name }})
         if [ -z "$PR_ID" ]; then
-          echo "id=$PR_ID" >> $GITHUB_OUTPUT
-        else
           echo "No open pull request found for ${{ inputs.ref-name }}."
+        else
+          echo "id=$PR_ID" >> $GITHUB_OUTPUT
         fi
     - name: Find coverage comment
       if: steps.pr.outputs.id
