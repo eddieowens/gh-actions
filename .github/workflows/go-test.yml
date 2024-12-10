@@ -56,12 +56,12 @@ jobs:
           path: './.github/gh-actions'
           ref: ${{ inputs.workflow-ref }}
           token: '${{ github.token }}'
-      - uses: .github/gh-actions/go
+      - uses: ./.github/gh-actions/go
         name: Setup go
-      - uses: .github/gh-actions/go-test
+      - uses: ./.github/gh-actions/go-test
         with:
           dirs: ${{ inputs.dirs }}
-      - uses: .github/gh-actions/go-coverage
+      - uses: ./.github/gh-actions/go-coverage
         with:
           ref-name: ${{ inputs.ref-name }}
           go-cover-path: ${{ inputs.go-cover-path }}
