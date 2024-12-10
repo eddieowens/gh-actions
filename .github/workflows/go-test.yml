@@ -64,10 +64,12 @@ jobs:
       - uses: ./.github/gh-actions/go
         name: Setup go
       - uses: ./.github/gh-actions/go-test
+        name: Go test
         with:
           dirs: ${{ inputs.dirs }}
           mindepth: ${{ inputs.test-mindepth }}
       - uses: ./.github/gh-actions/go-coverage
+        name: Go coverage
         with:
           ref-name: ${{ inputs.ref-name }}
           go-cover-path: ${{ inputs.go-cover-path }}
