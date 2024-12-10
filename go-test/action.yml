@@ -9,11 +9,15 @@ inputs:
     description: Path to the coverprofile
     required: false
     default: ./cover.out
+  mindepth:
+    description: Set in case there are no go files in the root
+    required: false
+    default: '0'
 runs:
   using: composite
   steps:
     - name: Go unit test
       shell: bash
       run: |
-        dirs="$(find ${{inputs.dirs}} -type d -mindepth 1 -not -name '.*')"
+        dirs="$(find ${{inputs.dirs}} -mindepth ${{ inputs.mindepth }} -not -path '*/.*' -type d)"
         go test -v -coverprofile=${{inputs.cover-path}} -covermode=atomic -coverpkg=$dirs $dirs

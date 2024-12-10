@@ -31,6 +31,11 @@ on:
         required: false
         default: '70'
         type: string
+      test-mindepth:
+        description: Set to non-zero if there are no go files immediately within any dirs.
+        required: false
+        default: ''
+        type: string
       workflow-ref:
         description: If running this on a branch e.g. for testing, you can specify that branch here
         required: false
@@ -61,6 +66,7 @@ jobs:
       - uses: ./.github/gh-actions/go-test
         with:
           dirs: ${{ inputs.dirs }}
+          mindepth: ${{ inputs.test-mindepth }}
       - uses: ./.github/gh-actions/go-coverage
         with:
           ref-name: ${{ inputs.ref-name }}
