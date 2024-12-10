@@ -59,7 +59,7 @@ runs:
       if: steps.pr.outputs.id
       uses: peter-evans/create-or-update-comment@v4
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ inputs.gh_token || github.token }}
         issue-number: ${{ env.pull_request_id }}
         comment-id: ${{ steps.fc.outputs.comment-id }}
         edit-mode: replace
