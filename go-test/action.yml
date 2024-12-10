@@ -19,5 +19,5 @@ runs:
     - name: Go unit test
       shell: bash
       run: |
-        dirs="$(find ${{inputs.dirs}} -mindepth ${{ inputs.mindepth }} -not -path '*/.*' -type d)"
+        dirs="$(find ${{inputs.dirs}} -mindepth ${{ inputs.mindepth || 0 }} -not -path '*/.*' -type d)"
         go test -v -coverprofile=${{inputs.cover-path}} -covermode=atomic -coverpkg=$dirs $dirs
