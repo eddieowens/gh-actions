@@ -41,6 +41,8 @@ runs:
     - name: Find PR ID
       shell: bash
       id: pr
+      env:
+        GH_TOKEN: ${{ inputs.gh-token }}
       run: |
         PR_ID=$(gh pr view --json 'number' -q '.number' ${{ inputs.ref-name }})
         if [ -z "$PR_ID" ]; then
