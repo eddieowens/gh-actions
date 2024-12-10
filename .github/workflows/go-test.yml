@@ -45,6 +45,7 @@ jobs:
         with:
           repository: '${{ env.ACTIONS_REPO }}'
           path: './skiff-actions'
+          ref: ${{ github.ref_name }}
           token: '${{ github.token }}'
       - uses: ./skiff-actions/.github/actions/go
         name: Setup go
