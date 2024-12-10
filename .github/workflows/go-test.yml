@@ -76,5 +76,5 @@ jobs:
           threshold-file: ${{ inputs.threshold-file }}
           threshold-package: ${{ inputs.threshold-package }}
           threshold-total: ${{ inputs.threshold-total }}
-          gh-token: ${{ secrets.BOT_TOKEN }}
+          gh-token: ${{ secrets.ACTIONS_TOKEN }}
 
