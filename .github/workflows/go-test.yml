@@ -46,22 +46,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        name: Checkout Skiff actions
-        with:
-          repository: '${{ env.ACTIONS_REPO }}'
-          path: './skiff-actions'
-          ref: ${{ inputs.workflow-ref }}
-          token: '${{ github.token }}'
-      - uses: actions/checkout@v4
         name: Checkout
         with:
           token: '${{ github.token }}'
-      - uses: ./skiff-actions/.github/actions/go
+      - uses: actions/checkout@v4
+        name: Checkout Skiff actions
+        with:
+          repository: '${{ env.ACTIONS_REPO }}'
+          path: './.github/gh-actions'
+          ref: ${{ inputs.workflow-ref }}
+          token: '${{ github.token }}'
+      - uses: .github/gh-actions/go
         name: Setup go
-      - uses: ./skiff-actions/.github/actions/go-test
+      - uses: .github/gh-actions/go-test
         with:
           dirs: ${{ inputs.dirs }}
-      - uses: ./skiff-actions/.github/actions/go-coverage
+      - uses: .github/gh-actions/go-coverage
         with:
           ref-name: ${{ inputs.ref-name }}
           go-cover-path: ${{ inputs.go-cover-path }}
