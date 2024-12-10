@@ -6,11 +6,6 @@ on:
         required: false
         default: ./
         type: string
-      ref-name:
-        description: The name of the branch to calculate coverage
-        required: false
-        default: ''
-        type: string
       go-cover-path:
         description: The path to the coverage file generated in the test
         required: false
@@ -71,7 +66,7 @@ jobs:
       - uses: ./.github/gh-actions/go-coverage
         name: Go coverage
         with:
-          ref-name: ${{ inputs.ref-name }}
+          ref-name: ${{ github.ref_name }}
           go-cover-path: ${{ inputs.go-cover-path }}
           threshold-file: ${{ inputs.threshold-file }}
           threshold-package: ${{ inputs.threshold-package }}
