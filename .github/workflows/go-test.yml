@@ -52,6 +52,10 @@ jobs:
           path: './skiff-actions'
           ref: ${{ inputs.workflow-ref }}
           token: '${{ github.token }}'
+      - uses: actions/checkout@v4
+        name: Checkout
+        with:
+          token: '${{ github.token }}'
       - uses: ./skiff-actions/.github/actions/go
         name: Setup go
       - uses: ./skiff-actions/.github/actions/go-test
