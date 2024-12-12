@@ -72,4 +72,24 @@ jobs:
           threshold-package: ${{ inputs.threshold-package }}
           threshold-total: ${{ inputs.threshold-total }}
           gh-token: ${{ secrets.ACTIONS_TOKEN }}
-
+  go-lint:
+    name: Go lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout
+        with:
+          token: '${{ github.token }}'
+      - uses: actions/checkout@v4
+        name: Checkout Skiff actions
+        with:
+          repository: '${{ env.ACTIONS_REPO }}'
+          path: './.github/gh-actions'
+          ref: ${{ inputs.workflow-ref }}
+          token: '${{ github.token }}'
+      - uses: ./.github/gh-actions/go
+        name: Setup go
+      - uses: ./.github/gh-actions/go-lint
+        name: Go lint
