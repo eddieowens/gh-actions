@@ -1,0 +1,13 @@
+name: Setup Go
+description: Setup golang
+runs:
+  using: composite
+  steps:
+    - name: CWD
+      shell: bash
+      run: echo $PWD
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        check-latest: true
+        go-version-file: go.mod

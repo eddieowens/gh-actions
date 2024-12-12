@@ -1,0 +1,95 @@
+on:
+  workflow_call:
+    inputs:
+      test-dirs:
+        description: Space-separated list of directories to test
+        required: false
+        default: ./
+        type: string
+      go-cover-path:
+        description: The path to the coverage file generated in the test
+        required: false
+        default: ./cover.out
+        type: string
+      threshold-file:
+        description: The threshold for a singular file
+        required: false
+        default: '-1'
+        type: string
+      threshold-package:
+        description: The threshold for a singular package
+        required: false
+        default: '-1'
+        type: string
+      threshold-total:
+        description: The threshold required for the entire repo
+        required: false
+        default: '70'
+        type: string
+      test-mindepth:
+        description: Set to non-zero if there are no go files immediately within any dirs.
+        required: false
+        default: ''
+        type: string
+      workflow-ref:
+        description: If running this on a branch e.g. for testing, you can specify that branch here
+        required: false
+        default: ''
+        type: string
+
+env:
+  ACTIONS_REPO: skiff-sh/gh-actions
+
+jobs:
+  go-test:
+    name: Go test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout
+        with:
+          token: '${{ github.token }}'
+      - uses: actions/checkout@v4
+        name: Checkout Skiff actions
+        with:
+          repository: '${{ env.ACTIONS_REPO }}'
+          path: './.github/gh-actions'
+          ref: ${{ inputs.workflow-ref }}
+          token: '${{ github.token }}'
+      - uses: ./.github/gh-actions/go
+        name: Setup go
+      - uses: ./.github/gh-actions/go-test
+        name: Go test
+        with:
+          dirs: ${{ inputs.dirs }}
+          mindepth: ${{ inputs.test-mindepth }}
+      - uses: ./.github/gh-actions/go-coverage
+        name: Go coverage
+        with:
+          ref-name: ${{ github.ref_name }}
+          go-cover-path: ${{ inputs.go-cover-path }}
+          threshold-file: ${{ inputs.threshold-file }}
+          threshold-package: ${{ inputs.threshold-package }}
+          threshold-total: ${{ inputs.threshold-total }}
+          gh-token: ${{ secrets.ACTIONS_TOKEN }}
+  go-lint:
+    name: Go lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout
+        with:
+          token: '${{ github.token }}'
+      - uses: actions/checkout@v4
+        name: Checkout Skiff actions
+        with:
+          repository: '${{ env.ACTIONS_REPO }}'
+          path: './.github/gh-actions'
+          ref: ${{ inputs.workflow-ref }}
+          token: '${{ github.token }}'
+      - uses: ./.github/gh-actions/go
+        name: Setup go
+      - uses: ./.github/gh-actions/go-lint
+        name: Go lint

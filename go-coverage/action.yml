@@ -1,0 +1,76 @@
+name: Go coverage
+description: Check for adequate coverage for Go code
+inputs:
+  gh-token:
+    description: The GitHub token to use for generating the coverage report
+    required: false
+    default: ''
+  ref-name:
+    description: The name of the branch to calculate coverage
+    required: false
+    default: ''
+  go-cover-path:
+    description: The path to the coverage file generated in the test
+    required: false
+    default: ./cover.out
+  threshold-file:
+    description: The threshold for a singular file
+    required: false
+    default: '-1'
+  threshold-package:
+    description: The threshold for a singular package
+    required: false
+    default: '-1'
+  threshold-total:
+    description: The threshold required for the entire repo
+    required: false
+    default: '70'
+runs:
+  using: composite
+  steps:
+    - name: Check test coverage
+      id: coverage
+      uses: vladopajic/go-test-coverage@v2
+      continue-on-error: ${{ inputs.gh-token != '' }}
+      with:
+        local-prefix: github.com/${{ github.repository }}
+        profile: ${{ inputs.go-cover-path }}
+        threshold-file: ${{ inputs.threshold-file }}
+        threshold-package: ${{ inputs.threshold-package }}
+        threshold-total: ${{ inputs.threshold-total }}
+    - name: Find PR ID
+      shell: bash
+      id: pr
+      env:
+        GH_TOKEN: ${{ inputs.gh-token }}
+      run: |
+        PR_ID=$(gh pr view --json 'number' -q '.number' ${{ inputs.ref-name }})
+        if [ -z "$PR_ID" ]; then
+          echo "No open pull request found for ${{ inputs.ref-name }}."
+        else
+          echo "id=$PR_ID" >> $GITHUB_OUTPUT
+        fi
+    - name: Find coverage comment
+      if: steps.pr.outputs.id
+      uses: peter-evans/find-comment@v3
+      id: fc
+      with:
+        issue-number: ${{ steps.pr.outputs.id }}
+        comment-author: 'github-actions[bot]'
+        body-includes: 'go-test-coverage report:'
+    - name: Post coverage comment
+      if: steps.pr.outputs.id
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        token: ${{ inputs.gh-token }}
+        issue-number: ${{ steps.pr.outputs.id }}
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        edit-mode: replace
+        body: |
+          go-test-coverage report:
+          ```
+          ${{ fromJSON(steps.coverage.outputs.report) }} ```
+    - name: Check coverage
+      if: steps.coverage.outcome == 'failure'
+      shell: bash
+      run: echo "coverage check failed" && exit 1

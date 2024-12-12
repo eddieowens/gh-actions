@@ -1,0 +1,7 @@
+name: Go lint
+description: Lint via golangci-lint
+runs:
+  using: composite
+  steps:
+    - name: Go lint
+      uses: golangci/golangci-lint-action@v6
