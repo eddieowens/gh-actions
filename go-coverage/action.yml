@@ -55,6 +55,7 @@ runs:
       uses: peter-evans/find-comment@v3
       id: fc
       with:
+        token: '${{ inputs.gh-token }}'
         issue-number: ${{ steps.pr.outputs.id }}
         comment-author: 'github-actions[bot]'
         body-includes: 'go-test-coverage report:'
