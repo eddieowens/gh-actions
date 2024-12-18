@@ -1,0 +1,44 @@
+name: Build and push Docker
+description: Build and push Docker
+inputs:
+  push:
+    required: false
+    description: Should push
+    default: 'true'
+  tags:
+    required: false
+    description: The tags to use
+    default: ''
+  context:
+    required: false
+    description: The Docker context
+    default: ''
+  file:
+    required: false
+    description: The Dockerfile path
+    default: ''
+  image-description:
+    required: false
+    description: Description for the image
+    default: ''
+  image-source:
+    required: false
+    description: The github repo for the image
+    default: ''
+runs:
+  using: composite
+  steps:
+    - name: Build and push
+      env:
+        REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+      uses: docker/build-push-action@v6
+      with:
+        push: ${{ inputs.push || null }}
+        tags: ${{ inputs.tags || null }}
+        file: ${{ inputs.file || null }}
+        context: ${{ inputs.context || null }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        labels: |
+          "org.opencontainers.image.description"="${{ inputs.description }}"
+          "org.opencontainers.image.source"="${{ inputs.image_source || env.REPO_URL }}"

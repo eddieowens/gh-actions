@@ -1,0 +1,24 @@
+name: Login Docker
+description: Login Docker
+inputs:
+  username:
+    required: false
+    description: Username for login. Defaults to github.actor
+    default: ''
+  password:
+    required: false
+    description: Password for login.
+    default: ''
+  registry:
+    required: false
+    description: Registry to login.
+    default: ''
+runs:
+  using: composite
+  steps:
+    - name: Login Docker
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ inputs.registry || null }}
+        username: ${{ inputs.username || github.actor || null }}
+        password: ${{ inputs.password || null }}
