@@ -1,0 +1,78 @@
+on:
+  workflow_call:
+    inputs:
+      images:
+        description: The list of images to push
+        required: true
+        type: string
+      tags:
+        description: List of tags for the images
+        required: true
+        type: string
+      image-description:
+        description: The description for the image
+        required: true
+        type: string
+      push:
+        description: Should we push the image after building it
+        required: false
+        type: string
+        default: 'false'
+      workflow-ref:
+        description: If running this on a branch e.g. for testing, you can specify that branch here
+        required: false
+        default: ''
+        type: string
+      context:
+        description: The Docker context
+        required: false
+        default: .
+        type: string
+      file:
+        description: The Dockerfile
+        required: false
+        default: Dockerfile
+        type: string
+
+env:
+  ACTIONS_REPO: skiff-sh/gh-actions
+jobs:
+  docker:
+    name: Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout
+        with:
+          token: '${{ github.token }}'
+      - uses: actions/checkout@v4
+        name: Checkout Skiff actions
+        with:
+          repository: '${{ env.ACTIONS_REPO }}'
+          path: './.github/gh-actions'
+          ref: ${{ inputs.workflow-ref }}
+          token: '${{ github.token }}'
+      - uses: ./docker-setup
+      - name: Docker meta
+        uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: |
+            ${{ inputs.images }}
+          tags: |
+            ${{ inputs.tags }}
+      - name: Docker login
+        uses: ./docker-login
+        with:
+          registry: 'ghcr.io'
+          username: ${{ github.actor }}
+          password: ${{ secrets.ACTIONS_TOKEN }}
+      - name: Docker build and push
+        uses: ./docker-build-and-push
+        with:
+          context: ${{ inputs.context }}
+          file: ${{ inputs.file }}
+          image-description: ${{ inputs.image-description }}
+          image-source: ${{ github.server_url }}/${{ github.repository }}
+          push: ${{ inputs.push }}
+          tags: ${{ steps.meta.outputs.tags }}
