@@ -52,7 +52,7 @@ jobs:
           path: './.github/gh-actions'
           ref: ${{ inputs.workflow-ref }}
           token: '${{ github.token }}'
-      - uses: ./docker-setup
+      - uses: ./.github/gh-actions/docker-setup
       - name: Docker meta
         uses: docker/metadata-action@v5
         id: meta
@@ -62,13 +62,13 @@ jobs:
           tags: |
             ${{ inputs.tags }}
       - name: Docker login
-        uses: ./docker-login
+        uses: ./.github/gh-actions/docker-login
         with:
           registry: 'ghcr.io'
           username: ${{ github.actor }}
           password: ${{ secrets.ACTIONS_TOKEN }}
       - name: Docker build and push
-        uses: ./docker-build-and-push
+        uses: ./.github/gh-actions/docker-build-and-push
         with:
           context: ${{ inputs.context }}
           file: ${{ inputs.file }}
