@@ -31,6 +31,11 @@ on:
         required: false
         default: ''
         type: string
+      testcoverage-config-path:
+        description: The path to the .testcoverage.yml file
+        required: false
+        default: ''
+        type: string
       workflow-ref:
         description: If running this on a branch e.g. for testing, you can specify that branch here
         required: false
@@ -72,6 +77,7 @@ jobs:
           threshold-package: ${{ inputs.threshold-package }}
           threshold-total: ${{ inputs.threshold-total }}
           gh-token: ${{ secrets.ACTIONS_TOKEN }}
+          testcoverage-config-path: ${{ inputs.testcoverage-config-path }}
   go-lint:
     name: Go lint
     runs-on: ubuntu-latest

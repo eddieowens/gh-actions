@@ -25,6 +25,10 @@ inputs:
     description: The threshold required for the entire repo
     required: false
     default: '70'
+  testcoverage-config-path:
+    description: The path to the .testcoverage.yml file
+    required: false
+    default: ''
 runs:
   using: composite
   steps:
@@ -33,6 +37,7 @@ runs:
       uses: vladopajic/go-test-coverage@v2
       continue-on-error: ${{ inputs.gh-token != '' }}
       with:
+        config: ${{ inputs.testcoverage-config-path || null }}
         local-prefix: github.com/${{ github.repository }}
         profile: ${{ inputs.go-cover-path }}
         threshold-file: ${{ inputs.threshold-file }}
