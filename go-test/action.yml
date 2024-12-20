@@ -13,10 +13,22 @@ inputs:
     description: Set in case there are no go files in the root
     required: false
     default: '0'
+  skip-dirs:
+    description: A space-separated list of directories to skip
+    default: ''
+    required: false
 runs:
   using: composite
   steps:
     - name: Go unit test
       shell: bash
       run: |
-        go test -v -coverprofile=${{inputs.cover-path}} -covermode=atomic `find ${{inputs.dirs}} -mindepth ${{ inputs.mindepth || 0 }} -not -path '*/.*' -type d`
+        finder=(find ${{inputs.dirs}} -mindepth ${{ inputs.mindepth || 0 }} -not -path '*/.*' -type d)
+        
+        words="${{ inputs.skip-dirs }}"
+        
+        for i in $(echo $words) ; do
+          finder+=(-not -path "$i")
+        done
+        
+        go test -v -coverprofile=${{inputs.cover-path}} -covermode=atomic `"${finder[@]}"`
