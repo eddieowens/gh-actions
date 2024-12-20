@@ -33,6 +33,11 @@ on:
         required: false
         default: Dockerfile
         type: string
+      platforms:
+        description: List of target platforms to build
+        required: false
+        default: ''
+        type: string
 
 env:
   ACTIONS_REPO: skiff-sh/gh-actions
@@ -78,3 +83,4 @@ jobs:
           image-source: ${{ github.server_url }}/${{ github.repository }}
           push: ${{ inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
+          platforms: ${{ inputs.platforms }}
