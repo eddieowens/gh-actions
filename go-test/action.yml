@@ -31,4 +31,4 @@ runs:
           finder+=(-not -path "$i")
         done
         
-        go test -v -coverprofile=${{inputs.cover-path}} -covermode=atomic `${finder[@]}`
+        go test -v -coverprofile=${{inputs.cover-path}} -covermode=atomic `"${finder[@]}"`
