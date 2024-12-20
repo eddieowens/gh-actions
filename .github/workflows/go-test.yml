@@ -6,6 +6,11 @@ on:
         required: false
         default: ./
         type: string
+      test-skip-dirs:
+        description: Space-separated list of directories to skip in testing
+        required: false
+        default: ''
+        type: string
       go-cover-path:
         description: The path to the coverage file generated in the test
         required: false
@@ -68,6 +73,7 @@ jobs:
         with:
           dirs: ${{ inputs.test-dirs }}
           mindepth: ${{ inputs.test-mindepth }}
+          skip-dirs: ${{ inputs.test-skip-dirs }}
       - uses: ./.github/gh-actions/go-coverage
         name: Go coverage
         with:
