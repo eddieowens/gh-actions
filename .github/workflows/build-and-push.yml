@@ -38,6 +38,10 @@ on:
         required: false
         default: ''
         type: string
+    secrets:
+      GITHUB_TOKEN:
+        required: true
+        description: The github token to use to push the image.
 
 env:
   ACTIONS_REPO: skiff-sh/gh-actions
@@ -74,7 +78,7 @@ jobs:
       - name: Docker login
         uses: ./.github/gh-actions/docker-login
         with:
-          registry: 'ghcr.io'
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker build and push
