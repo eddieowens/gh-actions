@@ -54,6 +54,8 @@ jobs:
   go-test:
     name: Go test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v4
         name: Checkout
@@ -82,13 +84,11 @@ jobs:
           threshold-file: ${{ inputs.threshold-file }}
           threshold-package: ${{ inputs.threshold-package }}
           threshold-total: ${{ inputs.threshold-total }}
-          gh-token: ${{ secrets.ACTIONS_TOKEN }}
+          gh-token: ${{ secrets.GITHUB_TOKEN }}
           testcoverage-config-path: ${{ inputs.testcoverage-config-path }}
   go-lint:
     name: Go lint
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
       - uses: actions/checkout@v4
         name: Checkout
