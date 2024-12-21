@@ -38,10 +38,6 @@ on:
         required: false
         default: ''
         type: string
-    secrets:
-      GTIHUB_TOKEN:
-        required: true
-        description: The default github token used by the action.
 
 env:
   ACTIONS_REPO: skiff-sh/gh-actions
