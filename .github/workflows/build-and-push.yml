@@ -33,6 +33,15 @@ on:
         required: false
         default: Dockerfile
         type: string
+      platforms:
+        description: List of platforms to target when building the container
+        required: false
+        default: ''
+        type: string
+    secrets:
+      GTIHUB_TOKEN:
+        required: true
+        description: The default github token used by the action.
 
 env:
   ACTIONS_REPO: skiff-sh/gh-actions
@@ -71,7 +80,7 @@ jobs:
         with:
           registry: 'ghcr.io'
           username: ${{ github.actor }}
-          password: ${{ secrets.ACTIONS_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker build and push
         uses: ./.github/gh-actions/docker-build-and-push
         with:
@@ -81,3 +90,4 @@ jobs:
           image-source: ${{ github.server_url }}/${{ github.repository }}
           push: ${{ inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
+          platforms: ${{ inputs.platforms }}
