@@ -9,5 +9,5 @@ runs:
     - name: Create local registry
       shell: bash
       run: |
-        k3d create registry skiff -p 0.0.0.0:8562
+        k3d registry create skiff -p 0.0.0.0:8562
         
