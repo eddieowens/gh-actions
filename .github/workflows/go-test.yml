@@ -89,13 +89,6 @@ jobs:
         name: Checkout
         with:
           token: '${{ github.token }}'
-      - uses: actions/checkout@v4
-        name: Checkout Skiff actions
-        with:
-          repository: '${{ env.ACTIONS_REPO }}'
-          path: 'skiff-sh/gh-actions'@master
-          ref: ${{ inputs.workflow-ref }}
-          token: '${{ github.token }}'
       - uses: skiff-sh/gh-actions/go@master
         name: Setup go
       - uses: skiff-sh/gh-actions/go-lint@master
