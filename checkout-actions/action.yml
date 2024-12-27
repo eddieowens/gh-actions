@@ -1,0 +1,26 @@
+name: Checkout Skiff actions
+inputs:
+  actions-repo:
+    default: 'skiff-sh/gh-actions'
+    required: false
+    description: The repo housing the Skiff GH actions.
+  workflow-ref:
+    default: 'master'
+    required: false
+    description: The ref to use to checkout
+outputs:
+  path:
+    description: The base path housing the actions
+    value: './.github/gh-actions'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v4
+      name: Checkout Skiff actions
+      id: checkout
+      with:
+        repository: '${{ inputs.actions-repo }}'
+        path: './.github/gh-actions'
+        ref: ${{ inputs.workflow-ref }}
+        token: '${{ github.token }}'
