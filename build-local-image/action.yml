@@ -27,7 +27,7 @@ runs:
       id: meta
       with:
         images: |
-          ${{ inputs.host }}/${{ inputs.image-name }}
+          ${{ inputs.image-name }}
         tags: |
           type=raw,value=latest
     - name: Docker build and push
@@ -39,3 +39,8 @@ runs:
         image-source: ${{ github.server_url }}/${{ github.repository }}
         push: true
         tags: ${{ steps.meta.outputs.tags }}
+    - name: Push image to K3D
+      shell: bash
+      run: |
+        docker tag ${{ inputs.image-name}}:latest ${{ inputs.host }}/${{ inputs.image-name }}:latest
+        docker push ${{ inputs.host }}/${{ inputs.image-name }}:latest
