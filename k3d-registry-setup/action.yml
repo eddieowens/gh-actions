@@ -1,0 +1,13 @@
+name: Setup K3D registry
+outputs:
+  host:
+    description: The host to target for image tags
+    value: 'k3d-skiff:8562'
+runs:
+  using: composite
+  steps:
+    - name: Create local registry
+      shell: bash
+      run: |
+        k3d create registry skiff -p 0.0.0.0:8562
+        

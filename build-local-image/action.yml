@@ -1,0 +1,38 @@
+inputs:
+  image-name:
+    required: true
+    description: The name of the image e.g. 'pilot'
+  host:
+    required: true
+    description: The hostname for the registry to push
+  file:
+    required: true
+    description: The path to the Dockerfile to build
+  context:
+    required: false
+    description: The Docker build context
+    default: '.'
+outputs:
+  tag:
+    description: The full tag built
+    value: ${{ steps.meta.outputs.tags }}
+runs:
+  using: composite
+  steps:
+    - name: Docker meta
+      uses: docker/metadata-action@v5
+      id: meta
+      with:
+        images: |
+          ${{ inputs.host }}/${{ inputs.image-name }}
+        tags: |
+          type=raw,value=latest
+    - name: Docker build and push
+      uses: skiff-sh/gh-actions/docker-build-and-push@master
+      with:
+        context: ${{ inputs.context }}
+        file: ${{ inputs.file }}
+        image-description: 'Local build of ${{ inputs.image-name}}'
+        image-source: ${{ github.server_url }}/${{ github.repository }}
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
