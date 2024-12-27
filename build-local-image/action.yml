@@ -6,7 +6,8 @@ inputs:
     required: true
     description: The hostname for the registry to push
   file:
-    required: true
+    required: false
+    default: Dockerfile
     description: The path to the Dockerfile to build
   context:
     required: false
