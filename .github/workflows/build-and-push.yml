@@ -39,8 +39,6 @@ on:
         default: ''
         type: string
 
-env:
-  ACTIONS_REPO: skiff-sh/gh-actions
 jobs:
   docker:
     name: Docker
@@ -55,14 +53,7 @@ jobs:
         name: Checkout
         with:
           token: '${{ github.token }}'
-      - uses: actions/checkout@v4
-        name: Checkout Skiff actions
-        with:
-          repository: '${{ env.ACTIONS_REPO }}'
-          path: './.github/gh-actions'
-          ref: ${{ inputs.workflow-ref }}
-          token: '${{ github.token }}'
-      - uses: ./.github/gh-actions/docker-setup
+      - uses: skiff-sh/gh-actions/docker-setup@master
       - name: Docker meta
         uses: docker/metadata-action@v5
         id: meta
@@ -72,13 +63,13 @@ jobs:
           tags: |
             ${{ inputs.tags }}
       - name: Docker login
-        uses: ./.github/gh-actions/docker-login
+        uses: skiff-sh/gh-actions/docker-login@master
         with:
           registry: 'ghcr.io'
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker build and push
-        uses: ./.github/gh-actions/docker-build-and-push
+        uses: skiff-sh/gh-actions/docker-build-and-push@master
         with:
           context: ${{ inputs.context }}
           file: ${{ inputs.file }}

@@ -1,0 +1,11 @@
+name: Setup K3D
+description: Downloads and installs the K3D CLI
+
+runs:
+  using: composite
+  steps:
+    - name: Download K3D
+      shell: bash
+      run: |
+        curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+        k3d --help
