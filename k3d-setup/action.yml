@@ -1,11 +1,17 @@
 name: Setup K3D
 description: Downloads and installs the K3D CLI
 
+inputs:
+  version:
+    description: The version to install prefixed with a 'v'
+    required: false
+    default: 'v5.7.5'
+
 runs:
   using: composite
   steps:
     - name: Download K3D
       shell: bash
       run: |
-        curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+        curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=${{ inputs.version }} bash
         k3d --help
