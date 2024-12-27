@@ -2,7 +2,11 @@ name: Setup K3D registry
 outputs:
   host:
     description: The host to target for image tags
+    value: 'localhost:8562'
+  image-base:
+    description: The image base to reference in a K3D cluster
     value: 'k3d-skiff:8562'
+
 runs:
   using: composite
   steps:
