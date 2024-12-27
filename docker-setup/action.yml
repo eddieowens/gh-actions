@@ -1,7 +1,16 @@
 name: Setup Docker
 description: Setup Docker
+
+inputs:
+  driver-opts:
+    required: false
+    default: ''
+    description: Driver opts for setup
+
 runs:
   using: composite
   steps:
     - name: Set up Docker
       uses: docker/setup-buildx-action@v3
+      with:
+        driver-opts: ${{ inputs.driver-opts }}

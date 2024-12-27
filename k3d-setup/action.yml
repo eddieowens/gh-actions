@@ -22,3 +22,5 @@ runs:
     - name: Setup Docker
       if: inputs.setup-docker == 'true'
       uses: skiff-sh/gh-actions/docker-setup@master
+      with:
+        driver-opts: network=host

@@ -22,14 +22,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Docker meta
-      uses: docker/metadata-action@v5
-      id: meta
-      with:
-        images: |
-          ${{ inputs.image-name }}
-        tags: |
-          type=raw,value=latest
     - name: Docker build and push
       uses: skiff-sh/gh-actions/docker-build-and-push@master
       with:
@@ -37,10 +29,5 @@ runs:
         file: ${{ inputs.file }}
         image-description: 'Local build of ${{ inputs.image-name}}'
         image-source: ${{ github.server_url }}/${{ github.repository }}
-        push: false
-        tags: ${{ steps.meta.outputs.tags }}
-    - name: Push image to K3D
-      shell: bash
-      run: |
-        docker tag ${{ inputs.image-name}}:latest ${{ inputs.host }}/${{ inputs.image-name }}:latest
-        docker push ${{ inputs.host }}/${{ inputs.image-name }}:latest
+        push: true
+        tags: ${{ inputs.host }}/${{ inputs.image-name }}:latest
