@@ -37,7 +37,7 @@ runs:
         file: ${{ inputs.file }}
         image-description: 'Local build of ${{ inputs.image-name}}'
         image-source: ${{ github.server_url }}/${{ github.repository }}
-        push: true
+        push: false
         tags: ${{ steps.meta.outputs.tags }}
     - name: Push image to K3D
       shell: bash
