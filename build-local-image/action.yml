@@ -4,6 +4,9 @@ inputs:
   image-name:
     required: true
     description: The name of the image e.g. 'pilot'
+  image-base:
+    required: true
+    description: The image base for the K3D cluster
   host:
     required: true
     description: The hostname for the registry to push
@@ -16,6 +19,9 @@ inputs:
     description: The Docker build context
     default: '.'
 outputs:
+  image:
+    description: The reference for the image in a K3D cluster
+    value: '${{ inputs.image-base }}/${{ inputs.image-name }}:latest'
   tag:
     description: The full tag built
     value: ${{ steps.meta.outputs.tags }}
