@@ -6,6 +6,10 @@ inputs:
     description: The version to install prefixed with a 'v'
     required: false
     default: 'v5.7.5'
+  setup-docker:
+    description: Should docker be setup
+    required: false
+    default: 'true'
 
 runs:
   using: composite
@@ -15,3 +19,6 @@ runs:
       run: |
         curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | TAG=${{ inputs.version }} bash
         k3d --help
+    - name: Setup Docker
+      if: inputs.setup-docker == 'true'
+      uses: skiff-sh/gh-actions/docker-setup@master
