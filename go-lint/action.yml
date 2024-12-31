@@ -5,3 +5,5 @@ runs:
   steps:
     - name: Go lint
       uses: golangci/golangci-lint-action@v6
+      with:
+        version: v1.62
